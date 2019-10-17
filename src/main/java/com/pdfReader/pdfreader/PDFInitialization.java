@@ -1,11 +1,12 @@
 package com.pdfReader.pdfreader;
 
 import com.pdfReader.pdfreader.controler.Controller;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,13 +15,11 @@ public class PDFInitialization {
     private byte [] pdfToByte = null;
 
     public PDFInitialization(){
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(new ClassPathResource("Amalya Muradayan Portfolio.pdf").getFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+        InputStream fis = null;
+
+            ClassLoader classLoader = getClass().getClassLoader();
+            fis = classLoader.getResourceAsStream("AmalyaMuradayanPortfolio.pdf");
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] buf = new byte[1024];
         try {
