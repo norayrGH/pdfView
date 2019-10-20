@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,8 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.io.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class Controller {
@@ -26,7 +33,6 @@ public class Controller {
 
             HttpHeaders headers = new HttpHeaders();
 
-        try{
             Client client = ClientBuilder.newClient();
             Response responseHEROKU = client.target("https://webtopdf.expeditedaddons.com/?api_key=TBC8540PSL9FGN6Z4K1QJXMIDH3U210653877VAEOWRY92&content=http://www.wikipedia.org&margin=10&html_width=1024&title=MyPDFTitle")
                     .request(MediaType.TEXT_PLAIN_TYPE)
@@ -34,16 +40,15 @@ public class Controller {
             System.out.println("status: " + responseHEROKU.getStatus());
             System.out.println("headers: " + responseHEROKU.getHeaders());
             System.out.println("body:" + responseHEROKU.readEntity(String.class));
-        }catch (IncompatibleClassChangeError e ){
-            System.out.println(e.getMessage());
-
+        for (String key :responseHEROKU.getHeaders().keySet()){
+            headers.add(key,(String) responseHEROKU.getHeaders().getFirst(key));
         }
         headers.setContentType(org.springframework.http.MediaType.parseMediaType("application/pdf"));
         String filename = "AmalyaMuradayanPortfolio.pdf";
         headers.add("content-disposition", "inline;filename=" + filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-            ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfInitialization.pdfToByte(), headers, HttpStatus.OK);
+        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfInitialization.pdfToByte(), headers, HttpStatus.OK);
         return response;
     }
 }
