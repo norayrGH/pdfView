@@ -24,10 +24,10 @@ public class Controller {
         HttpHeaders headers = new HttpHeaders();
 
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        String filename = "AmalyaMuradayanPortfolio.pdf";
-        headers.add("content-disposition", "inline;filename=" + filename);
+        //String filename = "AmalyaMuradayanPortfolio.pdf";
+        //headers.add("content-disposition", "inline;filename=" + filename);
 
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            //headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
             ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfInitialization.pdfToByte(), headers, HttpStatus.OK);
         return response;
     }

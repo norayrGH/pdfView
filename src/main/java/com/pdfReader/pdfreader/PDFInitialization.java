@@ -19,7 +19,13 @@ public class PDFInitialization {
         InputStream fis = null;
 
             ClassLoader classLoader = getClass().getClassLoader();
-            fis = classLoader.getResourceAsStream("AmalyaMuradayanPortfolio.pdf");
+            try {
+                fis = classLoader.getResourceAsStream("AmalyaMuradyanPortfolio.pdf");
+            }
+           catch (Exception e)
+           {
+               System.out.println(e);
+           }
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] buf = new byte[1024];
         try {
